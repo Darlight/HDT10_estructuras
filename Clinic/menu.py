@@ -75,7 +75,7 @@ def main():
 			print("Saving...")
 			sleep(2)
 			try:
-				addDoctor(doctor_name, doctor_contact, doctor_specialty)
+				DBfunctions.add_Doctor(doctor_name, doctor_contact, doctor_specialty, doctor_specialty)
 			except:
 				print("Invalid values. Could not be added to the database.")
 			break
@@ -83,23 +83,20 @@ def main():
 			patient_name = input("What is their name? \n")
 			print("Saving...")
 			sleep(2)
-			patient_age = input("What is their age?\n")
-			print("Saving...")
-			sleep(2)
-			date_visit = input("When was their last visit? \n")
-			print('Saving...')
-			sleep(2)
-			patient_gender = input("What is their gender?\n")
-			print("Saving...")
-			sleep(2)
-			medicine = input("What is the medicine assigned to them? \n")
+			patient_contact = input("What is their phone contact?")
 			sleep(2)
 			try:
-				#USE THIS SPACE TO ADD THE VALUES TO THE DATAASE FOR THE Patient
-				print("ANAKIN")
+				DBfunctions.add_Patient(patient_name, patient_contact)
 			except:
 				print("Values could not be added to the database. Some values might be invalid.")
 			break
 		elif option == 7:
-			print("Hello there")
-
+			print("You've chosen to add a relationships")
+			try:
+				name1 = input("What is the name of your patient?")
+				erste = name1.rstrip()
+				name2 = input("What is the name of your second patient?")
+				zwitte = name2.rstrip()
+				DBfunctions.add_PatientConnection(erste, zwitte)
+			except Exception as e:
+				raise print("Could not add the relationship. Exception: " + str(e))
