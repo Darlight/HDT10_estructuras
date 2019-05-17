@@ -1,6 +1,7 @@
 import sys
 from time import sleep
-
+import DBfunctions
+#include <DBfunctions.py>
 
 i = True
 doctor_name = " "
