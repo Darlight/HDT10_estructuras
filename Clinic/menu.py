@@ -4,7 +4,7 @@ from time import sleep
 
 i = True
 doctor_name = " "
-doctor_speciality = " "
+doctor_specialty = " "
 doctor_contact= " "
 patient_name = " "
 patient_age = 0
@@ -52,6 +52,7 @@ def main():
 			print("Last date of visit: {}" .format(#Date))
 			print("Medicine: {}" .format(#Meds))
 		elif option = 5:
+			#IN BETWEEN ALL OF THESE, THERE NEEDS TO BE SOMETHING TO ADD ALL THESE VALUES TO THE DATABASE
 			doctor_name = input("What is the name of the new doctor?\n")
 			print("Saving...")
 			sleep(2)
@@ -61,3 +62,35 @@ def main():
 			doctor_contact = input("What is their contact? \n")
 			print("Saving...")
 			sleep(2)
+			try:
+				addDoctor(doctor_name, doctor_contact, doctor_specialty)
+			except:
+				print("Invalid values. Could not be added to the database.")
+			break
+		elif option = 6:
+			patient_name = input("What is their name? \n")
+			print("Saving...")
+			sleep(2)
+			patient_age = input("What is their age?\n")
+			print("Saving...")
+			sleep(2)
+			date_visit = input("When was their last visit? \n")
+			print('Saving...')
+			sleep(2)
+			patient_gender = input("What is their gender?\n")
+			print("Saving...")
+			sleep(2)
+			medicine = input("What is the medicine assigned to them? \n")
+			sleep(2)
+			try:
+				#USE THIS SPACE TO ADD THE VALUES TO THE DATAASE FOR THE Patient
+			except:
+				print("Values could not be added to the database. Some values might be invalid.")
+			break
+		elif option = 7:
+
+def addDoctor(name, contact, specialty):
+	#Space to add to the database
+
+def addPatient(name, age, visit, gender, medicine):
+	#Space to 
