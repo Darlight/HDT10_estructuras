@@ -87,16 +87,6 @@ class DBHospital(object):
             doctor.relationships.create("Knows", patient)
         return True
 
-    def add_DoctorDoctorConnection(self, doctor1, doctor2):
-        q = "MATCH (d:Doctor), (e:Doctor) WHERE d.name = \"{0}\" AND e.name = \"{0}\" RETURN d,e".format(doctor1, doctor2)
-        results = self._driver.query(q, returns = (client.Node, client.Node))
-        for i in results:
-            doctor1s = i[0]
-            doctor2s = i[1]
-            doctor1s.relationships.creat("Knows", doctor2s)
-        return True
-        
-        
     #Creates a list of doctors with the given specialty
     def find_DoctorsWithSpec(self,spec):
         doctors = []
