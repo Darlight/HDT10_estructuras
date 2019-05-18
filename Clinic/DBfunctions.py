@@ -112,6 +112,8 @@ class DBHospital(object):
         knownPatients = []
         q = "MATCH (p:Pattient)-[k:KNOWS"
 
+    
+
     def recommend_Doctor(self, patientName, spec):
         doctorsSpec = []            #Lista de doctores con especialidad especifica
         doctorsKnown = []            #Lista de doctores conocidos por amigos
