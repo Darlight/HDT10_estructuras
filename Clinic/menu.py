@@ -17,18 +17,26 @@ from DBfunctions import *
 i = True
 doctor_name = " "
 doctor_specialty = " "
-doctor_contact= " "
+doctor_phone= " "
+doctor_code = " "
 patient_name = " "
 patient_age = 0
 patient_gender= " "
 date_visit = " "
 medicine = " "
+menu = """1. Check Doctors
+        \n2. Check a Doctor's information
+        \n3. Check patients
+        \n4. Check a specific patient
+        \n5. Add doctor
+        \n6. Add patient
+        \n7. Add visit"""
 
 def main():
 	print("Welcome to the program! \nWhat would you like to do?")
 	database = DBfunctions("http://localhost:7687","neo4j","12345")
 	while i is True:
-		print("1. Check Doctors \n2. Check a Doctor's information \n3. Check patients \n4. Check a specific patient\n 5. Input data for a new doctor")
+		print(menu)
 		sleep(3)
 		option = input("Your option: ")
 		#Information to have in mind when working with this:
@@ -40,7 +48,7 @@ def main():
 			print("You've chosen to check the doctors")
 			print("The current doctor list is:")
 			with doctor_name as doc:
-				for doc in database#DATABASE GOES HERE:
+				for doc in database:     #DATABASE GOES HERE
 					print(doc)
 					sleep(0.5)
 			break
@@ -65,19 +73,22 @@ def main():
 			print("Last date of visit: {}" .format(#Date))
 			print("Medicine: {}" .format(#Meds))
 		elif option == 5:
-			#IN BETWEEN ALL OF THESE, THERE NEEDS TO BE SOMETHING TO ADD ALL THESE VALUES TO THE DATABASE
+			#Add doctor
 			doctor_name = input("What is the name of the new doctor?\n")
 			print("Saving...")
 			sleep(2)
 			doctor_specialty = input("What is their Specialty?\n")
 			print("Saving...")
 			sleep(2)
-			doctor_contact = input("What is their contact? \n")
+			doctor_phone = input("What is their phone nomber? \n")
+			print("Saving...")
+			sleep(2)
+                        doctor_code = input("What is their collegiate code? \n")
 			print("Saving...")
 			sleep(2)
 			try:
-				DBfunctions.add_Doctor(doctor_name, doctor_contact, doctor_specialty, doctor_specialty)
-			except:
+				DBfunctions.add_Doctor(doctor_name, doctor_phone, doctor_specialty, doctor_code)
+                        except:
 				print("Invalid values. Could not be added to the database.")
 			break
 		elif option == 6:

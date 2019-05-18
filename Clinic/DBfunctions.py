@@ -31,6 +31,72 @@ class DBHospital(object):
         # Creating a Drug node with its atributes
         self.drug.add(self._driver.nodes.create(name=name, dateassigned=date1, untildate=date2, dose=dose))
 
+    def add_visit(patient, doctor, drug, dose):
+        date1 = datetime.now()
+        date1s = "{:%Y-%m-#d}".format(date1)
+        date2 = datetime.now() + timedelta(month = 1)
+        date2s = "{:%Y-%m-#d}".format(date2)
+        add_Drug(drug, date1s, date2s, dose)
+        add_PatientDoctorConnection(patient, doctor)
+        add_PatientDrugConnection(patient, drug)
+        add_DoctorDrugConnection(doctor, drug)
+        return True
+
+    def add_PatientDoctorConnetion(self, patientName, doctorName):
+        q = "MATCH (p:Patient), (d:Doctor) WHERE p.name = \"{0}\" AND d.name = \"{0}\" RETURN p,d".format(patientName, doctorName)
+        results = self._driver.query(q, returns = (client.Node, client.Node))
+        for i in results:
+            patient = i[0]
+            doctor = i[1]
+            patient.relationships.create("Visits", doctor)
+        return True
+
+    def add_PatientDrugConnection(self, patientName, drugName):
+        q = "MATCH (p:Patient), (m:Drug) WHERE p.name = \"{0}\" AND m.name = \"{0}\" RETURN p,m".format(patientName, drugName)
+        results = self._driver.query(q, returns = (client.Node, client.Node))
+        for i in results:
+            patient = i[0]
+            drug = i[1]
+            patient.relationships.create("Takes", drug)
+        return True
+
+    def add_DoctorDrugConnection(self, doctorName, drugName):
+        q = "MATCH (d:Doctor), (m:Drug) WHERE d.name = \"{0}\" AND m.name = \"{0}\" RETURN p,m".format(doctorName, drugName)
+        results = self._driver.query(q, returns = (client.Node, client.Node))
+        for i in results:
+            doctor = i[0]
+            drug = i[1]
+            doctor.relationships.create("Prescribes", drug)
+        return True
+
+    def add_PatientPatientConnection(self, patient1, patient2):
+        q = "MATCH (p:Patient), (a:Patient) WHERE p.name = \"{0}\" AND a.name = \"{0}\" RETURN p,a".format(patient1, patient2)
+        results = self._driver.query(q, returns = (client.Node, client.Node))
+        for i in results:
+            patient1s = i[0]
+            patient2s = i[1]
+            patient1s.relationships.create("Knows", patient2s)
+        return True
+
+    def add_DoctorPatientConnection(self, doctorName, patientName):
+        q = "MATCH (d:Doctor), (p:Patient) WHERE d.name = \"{0}\" AND p.name = \"{0}\" RETURN d,p".format(doctorName, patientName)
+        results = self._driver.query(q, returns = (client.Node, client.Node))
+        for i in results:
+            doctor = i[0]
+            patient = i[1]
+            doctor.relationships.create("Knows", patient)
+        return True
+
+    def add_DoctorDoctorConnection(self, doctor1, doctor2):
+        q = "MATCH (d:Doctor), (e:Doctor) WHERE d.name = \"{0}\" AND e.name = \"{0}\" RETURN d,e".format(doctor1, doctor2)
+        results = self._driver.query(q, returns = (client.Node, client.Node))
+        for i in results:
+            doctor1s = i[0]
+            doctor2s = i[1]
+            doctor1s.relationships.creat("Knows", doctor2s)
+        return True
+        
+        
     #Creates a list of doctors with the given specialty
     def find_DoctorsWithSpec(self,spec):
         doctors = []
