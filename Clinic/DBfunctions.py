@@ -105,20 +105,6 @@ class DBHospital(object):
         for node in results:
             doctors.append(node[0]["name"])  # adds doctor name
         return doctors
-    #Creates a connection between two personss
-
-    def add_PatientConnection(self,name1,name2):
-        qpatient1 = "MATCH (p:Patient) WHERE p.name = \"{0}\" RETURN p".format(name1)
-        results = self._driver.query(qpatient1,returns = client.Node)
-
-        for node in results:
-            Patient1 = node[0]
-
-        qpatient2 = "MATCH (p:Patient) WHERE p.name = \"{0}\" RETURN p".format(name2)
-        results = self._driver.query(qpatient2,returns = client.Node)
-        for node in results:
-            Patient2 = node[0]
-            Patient1.relationships.create("KNOWS", Patient2)
 
     #Crates a session with a doctor created beforehand and prescribes the drug
 
