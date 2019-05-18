@@ -70,5 +70,43 @@ class DBHospital(object):
         knownPatients = []
         q = "MATCH (p:Pattient)-[k:KNOWS"
 
-    def recommend_Doctor(self,doctorName,):
-        return "Assassin"
+    def recommend_Doctor(self, patientName, spec):
+        doctorsSpec = []            #Lista de doctores con especialidad especifica
+        doctorsKnown = []            #Lista de doctores conocidos por amigos
+        doctorsRecommended = []     #Lista de doctores recomendados
+        
+        friends = []            #Lista de amigos del paciente
+        
+        #Se obtiene la lista de conocidos del paciente
+        q1 = "MATCH (p:Patient)-[r:Knows]->(f:Patient) WHERE p.name = \"{0}\" RETURN p, type(r), f".format(patientName)
+        results = self._driver.query(q1, returns = (client,Node, str, client.Node))
+        for friend in results:
+            friends.append(node[2]["name"])
+
+        #Se obtiene la lista de doctores con una especialidad especifica
+        doctorsSpec = find_DoctorsWithSpec(spec)
+
+        #Si el paciente tiene amigos o conocidos
+        #Si la lista de amigos tiene tamano diferente de cero
+        if (friends != None):
+            #Para cada paciente en la lista de amigos se obtiene el nombre del amigo
+            for patientName in friends:
+                q2 = "MATCH (p:Patient)-[r:Knows]->(f.Patient) WHERE p.name = \"{0}\" RETURN f".format(patientName)
+                results = self._driver.query(query, returns = client.Node)
+
+                for f in results:
+                    friends.append(f[0]["name"])
+            
+            #Doctores por especialidad
+            #Para cada doctor con especialidad
+            for x in range(len(doctorsSpec)):
+                #Para cada doctor conocido
+                #Se obtiene el nombre de los doctores conocidos y con la especialidad
+                for y in range(len(doctorsKnown)):
+                    q = "MATCH (p:Patient)-[r:Visits]->(d:Doctor) WHERE p.name = \"{0}\" AND d.name = \"{0}\" RETURN p, d".format(doctorsKnown[y], doctorsSpec[x])
+                    results = self._driver.query(q, returns = (client.Node, client.Node))
+                    for z in results:
+                        doctorsRecommended.append(node[1]["name"])
+
+            #Retorna la lista con los nombres de los doctores conocidos y con una especialidad especifica
+            return doctorsRecommended
