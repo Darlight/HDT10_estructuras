@@ -10,7 +10,7 @@ Muestra las opciones necesarias para hacer ajuestes en la base de datos Neo4j
 """
 import sys
 from time import sleep
-from DBfunctions.py import *
+from DBfunctions import *
 #include <DBfunctions.py>
 
 
@@ -26,6 +26,7 @@ medicine = " "
 
 def main():
 	print("Welcome to the program! \nWhat would you like to do?")
+	database = DBfunctions("http://localhost:7687","neo4j","12345")
 	while i is True:
 		print("1. Check Doctors \n2. Check a Doctor's information \n3. Check patients \n4. Check a specific patient\n 5. Input data for a new doctor")
 		sleep(3)
@@ -39,7 +40,7 @@ def main():
 			print("You've chosen to check the doctors")
 			print("The current doctor list is:")
 			with doctor_name as doc:
-				for doc in #DATABASE GOES HERE:
+				for doc in database#DATABASE GOES HERE:
 					print(doc)
 					sleep(0.5)
 			break
